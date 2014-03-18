@@ -1,0 +1,4 @@
+<mapping class="com.springapp.domain_objects.Category"/>
+<mapping class="com.springapp.domain_objects.User"/>
+<mapping class="com.springapp.domain_objects.Product"/>
+<mapping class="com.springapp.domain_objects.Tag"/>
