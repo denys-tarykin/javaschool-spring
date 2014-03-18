@@ -13,7 +13,7 @@ import java.util.List;
 @Controller
 
 public class Home {
-    @RequestMapping(value="/backend",method = RequestMethod.GET)
+    @RequestMapping(value="/",method = RequestMethod.GET)
 	public String index(ModelMap model) {
         try {
             List<Category> cats = Factory.getInstance().DAOCategory().getAll();
