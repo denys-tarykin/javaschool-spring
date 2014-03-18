@@ -16,7 +16,7 @@ public class Product extends IdentifiableEntity {
     private BigDecimal price;
     private String description;
     private Set<Category> categories = new HashSet<Category>(0);
-    private Set<Tag> tags = new HashSet<>(0);
+    private Set<Tag> tags = new HashSet<Tag>(0);
 
     @Column(name = "name", length = 80, nullable = false)
     public String getName() {

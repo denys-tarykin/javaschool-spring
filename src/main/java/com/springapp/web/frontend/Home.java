@@ -21,6 +21,7 @@ public class Home {
         } catch (SQLException e) {
             model.addAttribute("errors", e);
         }
+        //model.addAttribute("cats", ProductService.listProduct());
 		return "MainTemplate";
 	}
 }

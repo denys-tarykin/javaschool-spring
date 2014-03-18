@@ -15,11 +15,6 @@ import java.sql.SQLException;
 @Controller
 
 public class Auth {
-    @RequestMapping("/backend")
-	public String index(ModelMap model) {
-		model.addAttribute("message", "Hello world!");
-		return "hello";
-	}
     @RequestMapping(method = RequestMethod.GET ,value = "/backend/login")
     public String loginGet(ModelMap model,HttpServletRequest request) {
         HttpSession session = request.getSession();

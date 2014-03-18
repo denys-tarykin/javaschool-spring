@@ -11,7 +11,7 @@ import java.util.Set;
 @Table(name = "tags")
 public class Tag extends IdentifiableEntity {
     private String tag;
-    private Set<Product> products = new HashSet<>(0);
+    private Set<Product> products = new HashSet<Product>(0);
 
     @Column(name = "tag", length = 100, nullable = false, unique = true)
     public String getTag() {
