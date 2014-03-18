@@ -2,6 +2,7 @@ package com.springapp.web.backend;
 
 import com.springapp.dao.Factory;
 import com.springapp.domain_objects.AuthUser;
+import com.springapp.domain_objects.Category;
 import com.springapp.domain_objects.Product;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,6 +16,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -58,7 +60,7 @@ public class Products {
     }
 
     @RequestMapping("/backend/products/add")
-    public String AddGet(HttpServletRequest request) {
+    public String AddGet(ModelMap model,HttpServletRequest request) {
         HttpSession session = request.getSession();
         AuthUser User_Auth = (AuthUser) session.getAttribute("userInfo");
         if (User_Auth == null)
@@ -66,10 +68,17 @@ public class Products {
         if (User_Auth.IsLogin().equals("false")) {
             return "redirect:/";
         }
+        try {
+            List<Category> cats = Factory.getInstance().DAOCategory().getAll();
+            model.addAttribute("cats", cats);
+        } catch (SQLException e) {
+            model.addAttribute("errors", e);
+        }
         return "backend/products-add";
     }
 
     @RequestMapping(method = RequestMethod.POST ,value ="/backend/products/add")
+
     public String AddPost(ModelMap model,HttpServletRequest request) {
         HttpSession session = request.getSession();
         AuthUser User_Auth = (AuthUser) session.getAttribute("userInfo");
@@ -95,7 +104,7 @@ public class Products {
             Set cat = Factory.getInstance().DAOCategory().getForProductCreate(cats);
             prod.setCategories(cat);
             Factory.getInstance().DAOProduct().add(prod);//TODO: transactions
-            return "redirect:/backend/category-list";
+            return "redirect:/backend/products";
         } catch (SQLException e) {
             model.addAttribute("errors", e);
         }
