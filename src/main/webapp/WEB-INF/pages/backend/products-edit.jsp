@@ -1,5 +1,7 @@
 <%@ page import="com.springapp.domain_objects.Category" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.lang.reflect.Array" %>
+<%@ page import="com.springapp.domain_objects.Product" %>
 
 <%--
   Created by IntelliJ IDEA.
@@ -16,8 +18,11 @@
             <li><a href="/backend/products">Products</a></li>
         </ul>
     </div>
+    <%
+        Product product = (Product) request.getAttribute("product");
+    %>
     <div class="inner-content">
-        <form method="post" action="/backend/products/add">
+        <form method="post" action="/backend/products/edit/<%=product.getId()%>">
 
             <p style="width: 50px;"><label>Name</label>
                 <input name="name">
@@ -34,14 +39,7 @@
             </p>
             <p style="width: 50px;">
                 <label>Categories:</label>
-                <select multiple name="categories">
-                <%
-                        ArrayList<Category> categories = (ArrayList<Category>) request.getAttribute("cats");
-                        for (int i = 0; i < categories.size(); i++) {
-                    %>
-                    <option value="<%=categories.get(i).getId()%>"><%=categories.get(i).getName()%></option>
-                    <%}%>
-                </select>
+               <%=request.getAttribute("check")%>
             </p>
 
             <p>
