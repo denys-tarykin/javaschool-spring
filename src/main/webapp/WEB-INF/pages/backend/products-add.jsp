@@ -37,9 +37,10 @@
                 <select multiple name="categories">
                 <%
                         ArrayList<Category> categories = (ArrayList<Category>) request.getAttribute("cats");
+                        Category cat = categories.get(1);
                         for (int i = 0; i < categories.size(); i++) {
                     %>
-                    <option value="<%=categories.get(i).getId()%>"><%=categories.get(i).getName()%></option>
+                    <option value="<%=categories.get(i).getId()%>" ><%=categories.get(i).getName()%></option>
                     <%}%>
                 </select>
             </p>

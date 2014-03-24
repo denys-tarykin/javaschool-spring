@@ -41,7 +41,7 @@ public class Products {
             return "redirect:/";
     }
 
-    @RequestMapping("/backend/products/{productId}")
+    @RequestMapping("/backend/products/delete/{productId}")
     public String Delete(@PathVariable("productId") Integer productId ,HttpServletRequest request) {
         HttpSession session = request.getSession();
         AuthUser User_Auth = (AuthUser) session.getAttribute("userInfo");
@@ -78,7 +78,6 @@ public class Products {
     }
 
     @RequestMapping(method = RequestMethod.POST ,value ="/backend/products/add")
-
     public String AddPost(ModelMap model,HttpServletRequest request) {
         HttpSession session = request.getSession();
         AuthUser User_Auth = (AuthUser) session.getAttribute("userInfo");
@@ -109,6 +108,33 @@ public class Products {
             model.addAttribute("errors", e);
         }
         return "backend/category-add";
+    }
+
+    @RequestMapping("/backend/products/edit/{productId}")
+    public String EditGet(@PathVariable("productId") Integer productId,ModelMap model,HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        AuthUser User_Auth = (AuthUser) session.getAttribute("userInfo");
+        if (User_Auth == null)
+            User_Auth = new AuthUser();
+        if (User_Auth.IsLogin().equals("false")) {
+            return "redirect:/";
+        }
+        try {
+            Product product = Factory.getInstance().DAOProduct().getById(productId);
+            List<Category> cats = Factory.getInstance().DAOCategory().getAll();
+            //List<Category> list = new ArrayList<Category>(product.getCategories());
+            //model.addAttribute("check",list.indexOf(cats.get(1)));
+            /*if(prod.equals(cats.get(1)))
+                model.addAttribute("check","1");
+            else
+                model.addAttribute("check","2");*/
+            model.addAttribute("cats", cats);
+            model.addAttribute("product", product);
+
+        } catch (SQLException e) {
+            model.addAttribute("errors", e);
+        }
+        return "backend/products-edit";
     }
 
 
