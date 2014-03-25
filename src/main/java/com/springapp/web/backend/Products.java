@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -128,6 +129,8 @@ public class Products {
                 model.addAttribute("check","1");
             else
                 model.addAttribute("check","2");*/
+            List theList = new ArrayList(product.getCategories());
+            model.addAttribute("cats_to_product", theList);
             model.addAttribute("cats", cats);
             model.addAttribute("product", product);
 

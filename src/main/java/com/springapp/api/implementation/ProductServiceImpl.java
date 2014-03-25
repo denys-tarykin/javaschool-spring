@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Shichirin on 18.03.14.
@@ -14,12 +16,13 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService {
 
+    Logger logger = Logger.getLogger(ProductService.class.getName());
 
     public void addProduct(Product Product) {
         try {
             Factory.getInstance().DAOProduct().add(Product);
         } catch (SQLException e) {
-           //TODO:log
+            logger.log(Level.SEVERE,"DB error:",e);
         }
 
     }
@@ -29,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
         try {
             products =Factory.getInstance().DAOProduct().getAll();
         } catch (SQLException e) {
-            //TODO:log
+            logger.log(Level.SEVERE,"DB error:",e);
         }
         return products;
     }
@@ -38,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
         try {
             Factory.getInstance().DAOProduct().remove(id);
         } catch (SQLException e) {
-            //TODO:log
+            logger.log(Level.SEVERE,"DB error:",e);
         }
 
     }
