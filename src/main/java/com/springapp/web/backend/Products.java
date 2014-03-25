@@ -15,7 +15,6 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -131,6 +130,38 @@ public class Products {
             model.addAttribute("errors", e);
         }
         return "backend/products-edit";
+    }
+
+    @RequestMapping(method = RequestMethod.POST ,value ="/backend/products/edit/{productId}")
+    public String EditPost(@PathVariable("productId") Integer productId,ModelMap model,HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        AuthUser User_Auth = (AuthUser) session.getAttribute("userInfo");
+        if (User_Auth == null)
+            User_Auth = new AuthUser();
+        if (User_Auth.IsLogin().equals("false")) {
+            return "redirect:/";
+        }
+
+        String name = request.getParameter("name");
+        String desc = request.getParameter("description");
+        String[] categories = request.getParameterValues("categories");
+        Set<Integer> cats = new HashSet<Integer>();
+        BigDecimal price = new BigDecimal(request.getParameter("price"), new MathContext(2));
+        for (int i = 0; i < categories.length; i++) {
+            cats.add(Integer.parseInt(categories[i]));
+        }
+        try {
+            Product product = Factory.getInstance().DAOProduct().getById(productId);
+            product.setName(name);
+            product.setDescription(desc);
+            Set cat = Factory.getInstance().DAOCategory().getForProductCreate(cats);
+            product.setCategories(cat);
+            product.setPrice(price);
+            Factory.getInstance().DAOProduct().update(product);
+        } catch (SQLException e) {
+            model.addAttribute("errors", e);
+        }
+        return "redirect:/backend/products";
     }
 
 

@@ -27,17 +27,17 @@
         <form method="post" action="/backend/products/edit/<%=product.getId()%>">
 
             <p style="width: 50px;"><label>Name</label>
-                <input name="name">
+                <input name="name" value="<%=product.getName()%>">
             </p>
 
             <p style="width: 50px;">
                 <label>Description</label>
-                <textarea name="description"></textarea>
+                <textarea name="description"><%=product.getDescription()%></textarea>
             </p>
 
             <p style="width: 50px;">
                 <label>Price:</label>
-                <input name="price">
+                <input name="price" value="<%=product.getPrice()%>">
             </p>
             <p style="width: 50px;">
                 <label>Categories:</label>
@@ -45,15 +45,15 @@
                         <%
                         ArrayList<Category> categories = (ArrayList<Category>) request.getAttribute("cats");
                         Set<Category> cat_to_product = (Set<Category>)request.getAttribute("cats_to_product");
-                        for (int i = 0; i < categories.size(); i++) {
-                    %>
-                    <option value="<%=categories.get(i).getId()%>" <% if(cat_to_product.contains(categories.get(i))){%> selected<%}%>><%=categories.get(i).getName()%></option>
+                        for (int i = 0; i < categories.size(); i++) {%>
+                        <option value="<%=categories.get(i).getId()%>" <% if(cat_to_product.contains(categories.get(i))){%> selected<%}%>><%=categories.get(i).getName()%></option>
                         <%}%>
+                </select>
             </p>
-
             <p>
                 <button>Save</button>
             </p>
+
         </form>
     </div>
 </div>
