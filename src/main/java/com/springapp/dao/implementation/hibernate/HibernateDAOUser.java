@@ -8,7 +8,7 @@ import org.hibernate.criterion.Restrictions;
 
 import java.sql.SQLException;
 
-public class HibernateDAOUser extends HibernateDAO<User> implements DAOUser {
+public class HibernateDAOUser extends HibernateDAOCRUD<User> implements DAOUser {
 
     protected Class getInnerClass() {
         return User.class;

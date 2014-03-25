@@ -1,6 +1,6 @@
 package com.springapp.dao.implementation.hibernate;
 
-import com.springapp.dao.interfaces.DAO;
+import com.springapp.dao.interfaces.DAOCRUD;
 import com.springapp.domain_objects.BaseDomainObject;
 import com.springapp.util.HibernateUtil;
 import org.hibernate.Session;
@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-abstract class HibernateDAO<T extends BaseDomainObject> implements DAO<T> {
+abstract class HibernateDAOCRUD<T extends BaseDomainObject> implements DAOCRUD<T> {
 
     //private Class<T> innerClass;
 
-    /*protected HibernateDAO() {
+    /*protected HibernateDAOCRUD() {
         this.innerClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }*/
     abstract protected Class getInnerClass();

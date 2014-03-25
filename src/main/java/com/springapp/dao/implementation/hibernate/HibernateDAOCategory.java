@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
-public class HibernateDAOCategory extends HibernateDAO<Category> implements DAOCategory {
+public class HibernateDAOCategory extends HibernateDAOCRUD<Category> implements DAOCategory {
 
     protected Class getInnerClass() {
         return Category.class;

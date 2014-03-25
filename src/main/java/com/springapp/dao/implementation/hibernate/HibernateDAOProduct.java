@@ -8,13 +8,13 @@ import com.springapp.util.HibernateUtil;
 
 import java.sql.SQLException;
 
-public class HibernateDAOProduct extends HibernateDAO<Product> implements DAOProduct {
+public class HibernateDAOProduct extends HibernateDAOCRUD<Product> implements DAOProduct {
 
     protected Class getInnerClass() {
         return Product.class;
     }
 
-    protected void CreateNewProduct(Product product, Category category)throws SQLException {
+    protected void CreateNewProduct(Product product, Category category) throws SQLException {
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();

@@ -1,7 +1,5 @@
 package com.springapp.domain_objects;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -32,5 +30,16 @@ public class Tag extends IdentifiableEntity {
 
     public void setProducts(Set<Product> products) {
         this.products = products;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        return !((Tag) o).getTag().equals(tag);
     }
 }
