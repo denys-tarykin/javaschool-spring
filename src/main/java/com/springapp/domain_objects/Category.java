@@ -17,6 +17,10 @@ public class Category extends IdentifiableEntity {
 
     public Category() {
     }
+
+    public Category(int id){
+        this.setId(id);
+    }
 /*
     @Id
     @Column(name = "id", unique = true, nullable = false)
@@ -52,7 +56,7 @@ public class Category extends IdentifiableEntity {
         return Category.class;
     }*/
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "categories")
+    @ManyToMany(mappedBy = "categories")
     public Set<Product> getProducts() {
         return products;
     }

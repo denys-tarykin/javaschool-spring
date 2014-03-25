@@ -35,7 +35,7 @@ public class Categories {
             return "redirect:/";
     }
 
-    @RequestMapping("/backend/categories/delete/{categoryId}")
+    @RequestMapping("/backend/categories/delete/{categoryId}/")
     public String Delete(@PathVariable("categoryId") Integer categoryId ,HttpServletRequest request) {
         HttpSession session = request.getSession();
         AuthUser User_Auth = (AuthUser) session.getAttribute("userInfo");

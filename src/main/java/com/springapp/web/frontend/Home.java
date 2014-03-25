@@ -1,5 +1,7 @@
 package com.springapp.web.frontend;
 
+import com.springapp.api.CategoryService;
+import com.springapp.api.implementation.CategoryServiceImpl;
 import com.springapp.dao.Factory;
 import com.springapp.domain_objects.Category;
 import org.springframework.stereotype.Controller;
@@ -15,12 +17,14 @@ import java.util.List;
 public class Home {
     @RequestMapping(value="/",method = RequestMethod.GET)
 	public String index(ModelMap model) {
-        try {
-            List<Category> cats = Factory.getInstance().DAOCategory().getAll();
-            model.addAttribute("cats", cats);
-        } catch (SQLException e) {
+        //try {
+            //List<Category> cats = Factory.getInstance().DAOCategory().getAll();
+            CategoryService catService = new CategoryServiceImpl();
+            List <Category> categoryList = catService.LoadCategories();
+            model.addAttribute("cats", categoryList);
+        /*} catch (SQLException e) {
             model.addAttribute("errors", e);
-        }
+        }*/
 		return "MainTemplate";
 	}
 }

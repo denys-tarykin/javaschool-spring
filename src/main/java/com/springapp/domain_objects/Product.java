@@ -1,5 +1,8 @@
 package com.springapp.domain_objects;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -45,7 +48,8 @@ public class Product extends IdentifiableEntity {
         this.description = description;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "product_to_category", joinColumns = {
             @JoinColumn(name = "product_id", nullable = false, updatable = false) },
             inverseJoinColumns = { @JoinColumn(name = "category_id",
@@ -58,7 +62,11 @@ public class Product extends IdentifiableEntity {
         this.categories = categories;
     }
 
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "tag_to_product",
+            joinColumns = {@JoinColumn(name = "product_id", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id", nullable = false)})
     public Set<Tag> getTags() {
         return tags;
     }

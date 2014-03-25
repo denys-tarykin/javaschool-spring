@@ -2,6 +2,8 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.lang.reflect.Array" %>
 <%@ page import="com.springapp.domain_objects.Product" %>
+<%@ page import="java.util.Set" %>
+<%@ page import="java.util.HashSet" %>
 
 <%--
   Created by IntelliJ IDEA.
@@ -39,7 +41,14 @@
             </p>
             <p style="width: 50px;">
                 <label>Categories:</label>
-               <%=request.getAttribute("check")%>
+                <select multiple name="categories">
+                        <%
+                        ArrayList<Category> categories = (ArrayList<Category>) request.getAttribute("cats");
+                        Set<Category> cat_to_product = (Set<Category>)request.getAttribute("cats_to_product");
+                        for (int i = 0; i < categories.size(); i++) {
+                    %>
+                    <option value="<%=categories.get(i).getId()%>" <% if(cat_to_product.contains(categories.get(i))){%> selected<%}%>><%=categories.get(i).getName()%></option>
+                        <%}%>
             </p>
 
             <p>

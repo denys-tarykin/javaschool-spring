@@ -123,14 +123,7 @@ public class Products {
         try {
             Product product = Factory.getInstance().DAOProduct().getById(productId);
             List<Category> cats = Factory.getInstance().DAOCategory().getAll();
-            //List<Category> list = new ArrayList<Category>(product.getCategories());
-            //model.addAttribute("check",list.indexOf(cats.get(1)));
-            /*if(prod.equals(cats.get(1)))
-                model.addAttribute("check","1");
-            else
-                model.addAttribute("check","2");*/
-            List theList = new ArrayList(product.getCategories());
-            model.addAttribute("cats_to_product", theList);
+            model.addAttribute("cats_to_product", product.getCategories());
             model.addAttribute("cats", cats);
             model.addAttribute("product", product);
 

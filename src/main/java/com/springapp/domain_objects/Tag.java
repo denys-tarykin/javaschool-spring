@@ -1,5 +1,8 @@
 package com.springapp.domain_objects;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,10 +25,7 @@ public class Tag extends IdentifiableEntity {
         this.tag = tag;
     }
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name = "tag_to_product",
-            joinColumns = {@JoinColumn(name = "tag_id", nullable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "product_id", nullable = false)})
+    @ManyToMany(mappedBy = "tags")
     public Set<Product> getProducts() {
         return products;
     }
