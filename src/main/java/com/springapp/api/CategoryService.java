@@ -9,4 +9,12 @@ import java.util.List;
  */
 public interface CategoryService {
     public List<Category>LoadCategories();
+
+    public void Delete(int id);
+
+    public void NewCategory(String name,String desc);
+
+    public Category getCategory(int id);
+
+    public void editCategory(int id,String name,String desc);
 }
