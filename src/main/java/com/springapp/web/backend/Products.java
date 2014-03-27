@@ -4,6 +4,7 @@ import com.springapp.dao.Factory;
 import com.springapp.domain_objects.AuthUser;
 import com.springapp.domain_objects.Category;
 import com.springapp.domain_objects.Product;
+import com.springapp.domain_objects.Tag;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -93,8 +94,15 @@ public class Products {
         for (int i = 0; i < categories.length; i++) {
             cats.add(Integer.parseInt(categories[i]));
         }
+
         //BigDecimal price = new BigDecimal(request.getParameter("price"), new MathContext(2, RoundingMode.HALF_UP));
         BigDecimal price = new BigDecimal(request.getParameter("price"), new MathContext(2));
+        String tags = request.getParameter("tags");
+        String[] tags_product = tags.split(",");
+        Set<String> tags_to_product = new HashSet<String>();
+        for (int i=0;i< tags_product.length;i++){
+            tags_to_product.add(tags_product[i]);
+        }
         try {
             Product prod = new Product();
             prod.setName(name);
@@ -102,7 +110,8 @@ public class Products {
             prod.setPrice(price);
             Set cat = Factory.getInstance().DAOCategory().getForProductCreate(cats);
             prod.setCategories(cat);
-            Factory.getInstance().DAOProduct().add(prod);//TODO: transactions
+            //prod.setTags(tags_to_product);
+            Factory.getInstance().DAOProduct().add(prod);
             return "redirect:/backend/products";
         } catch (SQLException e) {
             model.addAttribute("errors", e);
@@ -147,16 +156,27 @@ public class Products {
         String[] categories = request.getParameterValues("categories");
         Set<Integer> cats = new HashSet<Integer>();
         BigDecimal price = new BigDecimal(request.getParameter("price"), new MathContext(2));
-        for (int i = 0; i < categories.length; i++) {
-            cats.add(Integer.parseInt(categories[i]));
-        }
+        String tags = request.getParameter("tags");
+        String[] tags_product = tags.split(",");
+        Set<Tag> tags_to_product = new HashSet<Tag>();
+        /*for (int i=0;i< tags_product.length;i++){
+            tags_to_product.add(tags_product[i]);
+        }*/
         try {
+            for (int i = 0; i < tags_product.length; i++) {
+                Tag tag = new Tag();
+                tag.setTag(tags_product[i]);
+                tags_to_product.add(tag);
+                Factory.getInstance().DAOTag().add(tag);
+
+            }
             Product product = Factory.getInstance().DAOProduct().getById(productId);
             product.setName(name);
             product.setDescription(desc);
             Set cat = Factory.getInstance().DAOCategory().getForProductCreate(cats);
             product.setCategories(cat);
             product.setPrice(price);
+            //product.setTags(tags_to_product);
             Factory.getInstance().DAOProduct().update(product);
         } catch (SQLException e) {
             model.addAttribute("errors", e);

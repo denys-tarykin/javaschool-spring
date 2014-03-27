@@ -51,6 +51,10 @@
                 </select>
             </p>
             <p>
+                <label>Tags</label>
+                <input name="tags">
+            </p>
+            <p>
                 <button>Save</button>
             </p>
 

@@ -1,14 +1,16 @@
 package com.springapp.dao;
 
-import  com.springapp.dao.implementation.hibernate.HibernateDAOCategory;
-import  com.springapp.dao.implementation.hibernate.HibernateDAOProduct;
-import  com.springapp.dao.implementation.hibernate.HibernateDAOUser;
+import com.springapp.dao.implementation.hibernate.HibernateDAOCategory;
+import com.springapp.dao.implementation.hibernate.HibernateDAOProduct;
+import com.springapp.dao.implementation.hibernate.HibernateDAOTag;
+import com.springapp.dao.implementation.hibernate.HibernateDAOUser;
 
 public class Factory {
 
     private HibernateDAOCategory DAO_CATEGORY = null;
     private HibernateDAOUser DAO_USER = null;
     private HibernateDAOProduct DAO_PRODUCT = null;
+    private HibernateDAOTag DAO_TAG = null;
     private static Factory INSTANCE = null;
 
     public static Factory getInstance() {
@@ -36,6 +38,12 @@ public class Factory {
             DAO_PRODUCT = new HibernateDAOProduct();
         }
         return DAO_PRODUCT;
+    }
+    public HibernateDAOTag DAOTag() {
+        if (DAO_TAG == null) {
+            DAO_TAG = new HibernateDAOTag();
+        }
+        return DAO_TAG;
     }
 
 }
