@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
-import java.math.MathContext;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
@@ -96,7 +96,7 @@ public class Products {
         }
 
         //BigDecimal price = new BigDecimal(request.getParameter("price"), new MathContext(2, RoundingMode.HALF_UP));
-        BigDecimal price = new BigDecimal(request.getParameter("price"), new MathContext(2));
+        BigDecimal price = new BigDecimal(request.getParameter("price")).setScale(2, RoundingMode.HALF_UP);
         String tags = request.getParameter("tags");
         String[] tags_product = tags.split(",");
         Set<String> tags_to_product = new HashSet<String>();
@@ -155,7 +155,7 @@ public class Products {
         String desc = request.getParameter("description");
         String[] categories = request.getParameterValues("categories");
         Set<Integer> cats = new HashSet<Integer>();
-        BigDecimal price = new BigDecimal(request.getParameter("price"), new MathContext(2));
+        BigDecimal price = new BigDecimal(request.getParameter("price")).setScale(2,RoundingMode.HALF_UP);
         String tags = request.getParameter("tags");
         String[] tags_product = tags.split(",");
         Set<Tag> tags_to_product = new HashSet<Tag>();
