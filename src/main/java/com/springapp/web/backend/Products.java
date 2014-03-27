@@ -159,15 +159,19 @@ public class Products {
         String tags = request.getParameter("tags");
         String[] tags_product = tags.split(",");
         Set<Tag> tags_to_product = new HashSet<Tag>();
-        /*for (int i=0;i< tags_product.length;i++){
-            tags_to_product.add(tags_product[i]);
-        }*/
+
         try {
             for (int i = 0; i < tags_product.length; i++) {
-                Tag tag = new Tag();
-                tag.setTag(tags_product[i]);
+            Tag tag = Factory.getInstance().DAOTag().getByTag(tags_product[i]);
+                if(tag == null){
+                    Tag new_tag = new Tag();
+                    new_tag.setTag(tags_product[i]);
+                    Factory.getInstance().DAOTag().add(new_tag);
+                    tag = Factory.getInstance().DAOTag().getByTag(tags_product[i]);
+                    tags_to_product.add(tag);
+                }else{
                 tags_to_product.add(tag);
-                Factory.getInstance().DAOTag().add(tag);
+                }
 
             }
             Product product = Factory.getInstance().DAOProduct().getById(productId);
@@ -176,7 +180,7 @@ public class Products {
             Set cat = Factory.getInstance().DAOCategory().getForProductCreate(cats);
             product.setCategories(cat);
             product.setPrice(price);
-            //product.setTags(tags_to_product);
+            product.setTags(tags_to_product);
             Factory.getInstance().DAOProduct().update(product);
         } catch (SQLException e) {
             model.addAttribute("errors", e);
