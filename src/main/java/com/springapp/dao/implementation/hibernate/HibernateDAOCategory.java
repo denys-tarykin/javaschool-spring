@@ -2,15 +2,9 @@ package com.springapp.dao.implementation.hibernate;
 
 import com.springapp.dao.interfaces.DAOCategory;
 import com.springapp.domain_objects.Category;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
-import com.springapp.util.HibernateUtil;
 
-import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
 
-public class HibernateDAOCategory extends HibernateDAOCRUD<Category> implements DAOCategory {
+public class HibernateDAOCategory extends HibernateDAOIdentifiable<Category> implements DAOCategory {
 
     protected Class getInnerClass() {
         return Category.class;
@@ -19,7 +13,7 @@ public class HibernateDAOCategory extends HibernateDAOCRUD<Category> implements 
     public void swap(int id1, int id2) {
     }
 
-    public Set getForProductCreate(Set<Integer> ids) throws SQLException {
+    /*public Set getForProductCreate(Set<Integer> ids) throws SQLException {
         Session session = null;
         Set<Category> categories = null;
         try {
@@ -37,7 +31,7 @@ public class HibernateDAOCategory extends HibernateDAOCRUD<Category> implements 
 
         return categories;
     }
-
+*/
 }
 
 

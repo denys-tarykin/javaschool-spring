@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +26,7 @@ import java.util.Set;
 public class Products {
 
     @RequestMapping("/backend/products")
-    public String LoadGet(ModelMap model,HttpServletRequest request) {
+    public String LoadGet(ModelMap model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         AuthUser User_Auth = (AuthUser) session.getAttribute("userInfo");
         if (User_Auth == null)
@@ -43,7 +44,7 @@ public class Products {
     }
 
     @RequestMapping("/backend/products/delete/{productId}")
-    public String Delete(@PathVariable("productId") Integer productId ,HttpServletRequest request) {
+    public String Delete(@PathVariable("productId") Integer productId, HttpServletRequest request) {
         HttpSession session = request.getSession();
         AuthUser User_Auth = (AuthUser) session.getAttribute("userInfo");
         if (User_Auth == null)
@@ -61,7 +62,7 @@ public class Products {
     }
 
     @RequestMapping("/backend/products/add")
-    public String AddGet(ModelMap model,HttpServletRequest request) {
+    public String AddGet(ModelMap model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         AuthUser User_Auth = (AuthUser) session.getAttribute("userInfo");
         if (User_Auth == null)
@@ -78,8 +79,8 @@ public class Products {
         return "backend/products-add";
     }
 
-    @RequestMapping(method = RequestMethod.POST ,value ="/backend/products/add")
-    public String AddPost(ModelMap model,HttpServletRequest request) {
+    @RequestMapping(method = RequestMethod.POST, value = "/backend/products/add")
+    public String AddPost(ModelMap model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         AuthUser User_Auth = (AuthUser) session.getAttribute("userInfo");
         if (User_Auth == null)
@@ -91,8 +92,8 @@ public class Products {
         String desc = request.getParameter("description");
         String[] categories = request.getParameterValues("categories");
         Set<Integer> cats = new HashSet<Integer>();
-        for (int i = 0; i < categories.length; i++) {
-            cats.add(Integer.parseInt(categories[i]));
+        for (String category : categories) {
+            cats.add(Integer.parseInt(category));
         }
 
         //BigDecimal price = new BigDecimal(request.getParameter("price"), new MathContext(2, RoundingMode.HALF_UP));
@@ -100,15 +101,13 @@ public class Products {
         String tags = request.getParameter("tags");
         String[] tags_product = tags.split(",");
         Set<String> tags_to_product = new HashSet<String>();
-        for (int i=0;i< tags_product.length;i++){
-            tags_to_product.add(tags_product[i]);
-        }
+        Collections.addAll(tags_to_product, tags_product);
         try {
             Product prod = new Product();
             prod.setName(name);
             prod.setDescription(desc);
             prod.setPrice(price);
-            Set cat = Factory.getInstance().DAOCategory().getForProductCreate(cats);
+            Set cat = Factory.getInstance().DAOCategory().getByIds(cats);
             prod.setCategories(cat);
             //prod.setTags(tags_to_product);
             Factory.getInstance().DAOProduct().add(prod);
@@ -120,7 +119,7 @@ public class Products {
     }
 
     @RequestMapping("/backend/products/edit/{productId}")
-    public String EditGet(@PathVariable("productId") Integer productId,ModelMap model,HttpServletRequest request) {
+    public String EditGet(@PathVariable("productId") Integer productId, ModelMap model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         AuthUser User_Auth = (AuthUser) session.getAttribute("userInfo");
         if (User_Auth == null)
@@ -141,8 +140,8 @@ public class Products {
         return "backend/products-edit";
     }
 
-    @RequestMapping(method = RequestMethod.POST ,value ="/backend/products/edit/{productId}")
-    public String EditPost(@PathVariable("productId") Integer productId,ModelMap model,HttpServletRequest request) {
+    @RequestMapping(method = RequestMethod.POST, value = "/backend/products/edit/{productId}")
+    public String EditPost(@PathVariable("productId") Integer productId, ModelMap model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         AuthUser User_Auth = (AuthUser) session.getAttribute("userInfo");
         if (User_Auth == null)
@@ -155,29 +154,32 @@ public class Products {
         String desc = request.getParameter("description");
         String[] categories = request.getParameterValues("categories");
         Set<Integer> cats = new HashSet<Integer>();
-        BigDecimal price = new BigDecimal(request.getParameter("price")).setScale(2,RoundingMode.HALF_UP);
+        for (String cat : categories) {
+            cats.add(Integer.parseInt(cat));
+        }
+        BigDecimal price = new BigDecimal(request.getParameter("price")).setScale(2, RoundingMode.HALF_UP);
         String tags = request.getParameter("tags");
         String[] tags_product = tags.split(",");
         Set<Tag> tags_to_product = new HashSet<Tag>();
 
         try {
-            for (int i = 0; i < tags_product.length; i++) {
-            Tag tag = Factory.getInstance().DAOTag().getByTag(tags_product[i]);
-                if(tag == null){
+            for (String tag : tags_product) {
+                Tag tagInstance = Factory.getInstance().DAOTag().getByTag(tag);
+                if (tagInstance == null) {
                     Tag new_tag = new Tag();
-                    new_tag.setTag(tags_product[i]);
+                    new_tag.setTag(tag);
                     Factory.getInstance().DAOTag().add(new_tag);
-                    tag = Factory.getInstance().DAOTag().getByTag(tags_product[i]);
-                    tags_to_product.add(tag);
-                }else{
-                tags_to_product.add(tag);
+                    tagInstance = Factory.getInstance().DAOTag().getByTag(tag);
+                    tags_to_product.add(tagInstance);
+                } else {
+                    tags_to_product.add(tagInstance);
                 }
 
             }
             Product product = Factory.getInstance().DAOProduct().getById(productId);
             product.setName(name);
             product.setDescription(desc);
-            Set cat = Factory.getInstance().DAOCategory().getForProductCreate(cats);
+            Set cat = Factory.getInstance().DAOCategory().getByIds(cats);
             product.setCategories(cat);
             product.setPrice(price);
             product.setTags(tags_to_product);

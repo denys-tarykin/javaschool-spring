@@ -13,10 +13,11 @@ public interface DAOCRUD<T extends BaseDomainObject> {
 
     public void update(T obj) throws SQLException;
 
-    public T getById(int id) throws SQLException;
+    //public T getById(int id) throws SQLException;
 
     public List<T> getAll() throws SQLException;
 
-    public void remove(int id) throws SQLException;
+    //public void remove(int id) throws SQLException;
+    public void remove(T t) throws SQLException;
 
 }

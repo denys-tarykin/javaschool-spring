@@ -51,7 +51,7 @@ abstract class HibernateDAOCRUD<T extends BaseDomainObject> implements DAOCRUD<T
         }
     }
 
-    public T getById(int id) throws SQLException {
+   /* public T getById(int id) throws SQLException {
         Session session = null;
         T t = null;
         try {
@@ -65,7 +65,7 @@ abstract class HibernateDAOCRUD<T extends BaseDomainObject> implements DAOCRUD<T
             }
         }
         return t;
-    }
+    }*/
 
     public List<T> getAll() throws SQLException {
         Session session = null;
@@ -83,12 +83,28 @@ abstract class HibernateDAOCRUD<T extends BaseDomainObject> implements DAOCRUD<T
         return t;
     }
 
-    public void remove(int id) throws SQLException {
+   /* public void remove(int id) throws SQLException {
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             session.delete(this.getById(id));
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            throw new SQLException("Data error", e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }*/
+
+    public void remove(T t) throws SQLException {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            session.delete(t);
             session.getTransaction().commit();
         } catch (Exception e) {
             throw new SQLException("Data error", e);

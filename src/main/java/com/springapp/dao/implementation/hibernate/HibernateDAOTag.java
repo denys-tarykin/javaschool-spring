@@ -8,11 +8,12 @@ import org.hibernate.criterion.Restrictions;
 
 import java.sql.SQLException;
 
-public class HibernateDAOTag extends HibernateDAOCRUD<Tag> implements DAOTag {
+public class HibernateDAOTag extends HibernateDAOIdentifiable<Tag> implements DAOTag {
 
     protected Class getInnerClass() {
         return Tag.class;
     }
+
     public Tag getByTag(String tag) throws SQLException {
         Session session = null;
         Tag return_tag = null;

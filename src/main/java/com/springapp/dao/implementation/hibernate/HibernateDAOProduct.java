@@ -1,20 +1,15 @@
 package com.springapp.dao.implementation.hibernate;
 
 import com.springapp.dao.interfaces.DAOProduct;
-import com.springapp.domain_objects.Category;
 import com.springapp.domain_objects.Product;
-import org.hibernate.Session;
-import com.springapp.util.HibernateUtil;
 
-import java.sql.SQLException;
-
-public class HibernateDAOProduct extends HibernateDAOCRUD<Product> implements DAOProduct {
+public class HibernateDAOProduct extends HibernateDAOIdentifiable<Product> implements DAOProduct {
 
     protected Class getInnerClass() {
         return Product.class;
     }
 
-    protected void CreateNewProduct(Product product, Category category) throws SQLException {
+    /*public void createNewProduct(Product product, Category category) throws SQLException {
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
@@ -28,6 +23,6 @@ public class HibernateDAOProduct extends HibernateDAOCRUD<Product> implements DA
                 session.close();
             }
         }
-    }
+    }*/
 
 }

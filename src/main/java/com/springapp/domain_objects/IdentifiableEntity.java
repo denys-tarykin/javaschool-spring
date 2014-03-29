@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 @MappedSuperclass
 //@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-abstract class IdentifiableEntity implements BaseDomainObject, Serializable {
+public abstract class IdentifiableEntity implements BaseDomainObject, Serializable {
 
     private int id;
 
