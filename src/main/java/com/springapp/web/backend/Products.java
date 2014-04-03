@@ -56,7 +56,7 @@ public class Products {
             } catch (SQLException e) {
                 request.setAttribute("errors", e);
             }
-            return "backend/category-list";
+            return "backend/products-list";
         } else
             return "redirect:/";
     }
@@ -160,29 +160,37 @@ public class Products {
         BigDecimal price = new BigDecimal(request.getParameter("price")).setScale(2, RoundingMode.HALF_UP);
         String tags = request.getParameter("tags");
         String[] tags_product = tags.split(",");
-        Set<Tag> tags_to_product = new HashSet<Tag>();
+        Set<String> tag_name = new HashSet<String>();
+        for (int i=0;i<tags_product.length;i++) {
+            tag_name.add(tags_product[i]);
+        }
 
         try {
-            for (String tag : tags_product) {
-                Tag tagInstance = Factory.getInstance().DAOTag().getByTag(tag);
-                if (tagInstance == null) {
-                    Tag new_tag = new Tag();
-                    new_tag.setTag(tag);
-                    Factory.getInstance().DAOTag().add(new_tag);
-                    tagInstance = Factory.getInstance().DAOTag().getByTag(tag);
-                    tags_to_product.add(tagInstance);
-                } else {
-                    tags_to_product.add(tagInstance);
-                }
 
+           Set<Tag> tag = Factory.getInstance().DAOTag().getByNames(tag_name);
+            String[] array_tag=null;
+            Set<String> DB_tags =new HashSet<String>();
+            for (Tag tg : tag) {
+                DB_tags.add(tg.getTag());
             }
+            tag_name.remove(DB_tags);
+            if(tag_name.size()!=0){
+                Set<Tag> New_tags = new HashSet<Tag>();
+                for (String str_tag:tag_name){
+                    Tag tg = new Tag();
+                    tg.setTag(str_tag);
+                    New_tags.add(tg);
+                }
+                Factory.getInstance().DAOTag().addTags(New_tags);
+            }
+
             Product product = Factory.getInstance().DAOProduct().getById(productId);
             product.setName(name);
             product.setDescription(desc);
             Set cat = Factory.getInstance().DAOCategory().getByIds(cats);
             product.setCategories(cat);
             product.setPrice(price);
-            product.setTags(tags_to_product);
+            product.setTags(tag);
             Factory.getInstance().DAOProduct().update(product);
         } catch (SQLException e) {
             model.addAttribute("errors", e);

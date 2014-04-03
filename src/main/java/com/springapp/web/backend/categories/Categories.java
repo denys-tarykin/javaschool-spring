@@ -97,4 +97,19 @@ public class Categories {
         catService.editCategory(categoryId, request.getParameter("name"), request.getParameter("description"));
         return "redirect:/backend/categories";
     }
+
+
+    @RequestMapping(" /backend/category/products/{categoryId}")
+    public String ProductsGet(@PathVariable("categoryId") Integer categoryId,ModelMap model,HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        AuthUser User_Auth = (AuthUser) session.getAttribute("userInfo");
+        if (User_Auth == null)
+            User_Auth = new AuthUser();
+        if (User_Auth.IsLogin().equals("false")) {
+            return "redirect:/";
+        }
+        CategoryService catService = new CategoryServiceImpl();
+        model.addAttribute("products",catService.LoadProductByCategory(categoryId));
+        return "backend/category-products";
+    }
 }

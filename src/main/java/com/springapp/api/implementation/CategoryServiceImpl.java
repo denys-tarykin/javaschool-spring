@@ -4,6 +4,7 @@ import com.springapp.api.CategoryService;
 import com.springapp.api.ProductService;
 import com.springapp.dao.Factory;
 import com.springapp.domain_objects.Category;
+import com.springapp.domain_objects.Product;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -63,5 +64,15 @@ public class CategoryServiceImpl implements CategoryService{
         }catch (SQLException e) {
             logger.log(Level.SEVERE, "DB error:", e);
         }
+    }
+
+    public List<Product>LoadProductByCategory(int cat_id){
+        List<Product> products=null;
+        try {
+            products = Factory.getInstance().DAOProduct().loadProductsByCategory(cat_id);
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE,"DB error:",e);
+        }
+        return products;
     }
 }
