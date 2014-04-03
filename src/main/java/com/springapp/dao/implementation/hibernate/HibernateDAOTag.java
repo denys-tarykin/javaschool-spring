@@ -35,21 +35,7 @@ public class HibernateDAOTag extends HibernateDAOIdentifiable<Tag> implements DA
         return return_tag;
     }
 
-    public void addTags(Set<Tag> t) throws SQLException {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.save(t);
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            throw new SQLException("Data error", e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-    }
+
 
     public Set<Tag> getByNames(Collection<String> names) throws SQLException {
         Session session = null;

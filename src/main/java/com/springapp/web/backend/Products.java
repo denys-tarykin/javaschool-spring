@@ -175,13 +175,11 @@ public class Products {
             }
             tag_name.remove(DB_tags);
             if(tag_name.size()!=0){
-                Set<Tag> New_tags = new HashSet<Tag>();
                 for (String str_tag:tag_name){
                     Tag tg = new Tag();
                     tg.setTag(str_tag);
-                    New_tags.add(tg);
+                    Factory.getInstance().DAOTag().add(tg);
                 }
-                Factory.getInstance().DAOTag().addTags(New_tags);
             }
 
             Product product = Factory.getInstance().DAOProduct().getById(productId);
@@ -190,7 +188,7 @@ public class Products {
             Set cat = Factory.getInstance().DAOCategory().getByIds(cats);
             product.setCategories(cat);
             product.setPrice(price);
-            product.setTags(tag);
+            //product.setTags(tag);
             Factory.getInstance().DAOProduct().update(product);
         } catch (SQLException e) {
             model.addAttribute("errors", e);
