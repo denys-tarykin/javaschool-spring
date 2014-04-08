@@ -42,7 +42,7 @@ public class HibernateDAOTag extends HibernateDAOIdentifiable<Tag> implements DA
         Set<Tag> return_data = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            return_data = new HashSet<Tag>(session.createCriteria(this.getInnerClass()).add(Restrictions.in("name", names)).list());
+            return_data = new HashSet<Tag>(session.createCriteria(this.getInnerClass()).add(Restrictions.in("tag", names)).list());
 
         } catch (Exception e) {
             throw new SQLException("Data error", e);

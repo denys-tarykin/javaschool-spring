@@ -33,7 +33,27 @@ public class Products {
             User_Auth = new AuthUser();
         if (User_Auth.IsLogin().equals("true")) {
             try {
-                java.util.List<Product> products = Factory.getInstance().DAOProduct().getAll();
+                int offset = 0;
+                java.util.List<Product> products = Factory.getInstance().DAOProduct().getAllWithLimit(offset);
+                model.addAttribute("products", products);
+            } catch (SQLException e) {
+                model.addAttribute("errors", e);
+            }
+            return "backend/products-list";
+        } else
+            return "redirect:/";
+    }
+
+    @RequestMapping("/backend/products/page-{page}")
+    public String LoadPage(@PathVariable("page") Integer page,ModelMap model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        AuthUser User_Auth = (AuthUser) session.getAttribute("userInfo");
+        if (User_Auth == null)
+            User_Auth = new AuthUser();
+        if (User_Auth.IsLogin().equals("true")) {
+            try {
+                int offset = (page - 1)*2;
+                java.util.List<Product> products = Factory.getInstance().DAOProduct().getAllWithLimit(offset);
                 model.addAttribute("products", products);
             } catch (SQLException e) {
                 model.addAttribute("errors", e);
