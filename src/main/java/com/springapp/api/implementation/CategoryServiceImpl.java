@@ -66,10 +66,10 @@ public class CategoryServiceImpl implements CategoryService{
         }
     }
 
-    public List<Product>LoadProductByCategory(int cat_id){
+    public List<Product>LoadProductByCategory(int cat_id,int offset){
         List<Product> products=null;
         try {
-            products = Factory.getInstance().DAOProduct().loadProductsByCategory(cat_id);
+            products = Factory.getInstance().DAOProduct().loadProductsByCategory(cat_id,offset);
         } catch (SQLException e) {
             logger.log(Level.SEVERE,"DB error:",e);
         }

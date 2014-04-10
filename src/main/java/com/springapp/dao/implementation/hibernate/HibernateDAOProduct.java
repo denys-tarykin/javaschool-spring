@@ -16,7 +16,7 @@ public class HibernateDAOProduct extends HibernateDAOIdentifiable<Product> imple
         return Product.class;
     }
 
-    public List loadProductsByCategory(int cat_id) throws SQLException {
+    public List loadProductsByCategory(int cat_id,int offset) throws SQLException {
         Session session = null;
         List<Product> products = new ArrayList<Product>();
         try {
@@ -24,6 +24,8 @@ public class HibernateDAOProduct extends HibernateDAOIdentifiable<Product> imple
             products = session.createCriteria(this.getInnerClass())
                                             .createAlias("categories", "categories")
                                             .add(Restrictions.eq("categories.id", cat_id))
+                                            .setFirstResult(offset)
+                                            .setMaxResults(2)
                                             .list();
         } catch (Exception e) {
             throw new SQLException("Data error", e);
