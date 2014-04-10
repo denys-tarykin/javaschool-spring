@@ -8,6 +8,7 @@ import java.util.Set;
 /**
  * Created by Alex on 3/3/14.
  */
+//TODO:create interfaces for domain objects
 @Entity
 @Table(name = "tags")
 public class Tag extends IdentifiableEntity {

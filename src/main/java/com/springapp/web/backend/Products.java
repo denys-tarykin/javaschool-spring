@@ -184,7 +184,12 @@ public class Products {
         for (int i=0;i<tags_product.length;i++) {
             tag_name.add(tags_product[i]);
         }
+/*        ProductValidator.setName().....
+        new Product Validator (name,price....)
 
+        bool ProductValidator.Validate()
+                if true try-catch else HashMap ProductValidator.getErrorList()
+*/
         try {
 
            Set<Tag> tag = Factory.getInstance().DAOTag().getByNames(tag_name);
