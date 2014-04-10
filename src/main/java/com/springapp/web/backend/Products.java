@@ -193,7 +193,7 @@ public class Products {
             for (Tag tg : tag) {
                 DB_tags.add(tg.getTag());
             }
-            tag_name.remove(DB_tags);
+            tag_name.removeAll(DB_tags);
             if(tag_name.size()!=0){
                 for (String str_tag:tag_name){
                     Tag tg = new Tag();
