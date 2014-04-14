@@ -13,7 +13,7 @@ public interface CategoryService {
 
     public void Delete(int id);
 
-    public void NewCategory(String name,String desc);
+    public void newCategory(String name, String desc);
 
     public Category getCategory(int id);
 

@@ -27,7 +27,7 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
-    public List<Product> listProduct(){
+    public List<Product> getAllProducts() {
         List<Product> products=null;
         try {
             products =Factory.getInstance().DAOProduct().getAll();
@@ -44,5 +44,15 @@ public class ProductServiceImpl implements ProductService {
             logger.log(Level.SEVERE,"DB error:",e);
         }
 
+    }
+
+    public List<Product> getProducts(int offset, int limit) {
+        List<Product> products = null;
+        try {
+            products = Factory.getInstance().DAOProduct().getAllWithLimit(offset, limit);
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "DB error", e);
+        }
+        return products;
     }
 }

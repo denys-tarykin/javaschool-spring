@@ -11,7 +11,10 @@ public interface  ProductService {
 
     public void addProduct(Product Product);
 
-    public List<Product> listProduct();
+    public List<Product> getAllProducts();
 
     public void removeProduct(Integer id);
+
+    public List<Product> getProducts(int offset, int limit);
+
 }

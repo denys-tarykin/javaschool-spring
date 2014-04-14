@@ -34,7 +34,7 @@ public class Products {
         if (User_Auth.IsLogin().equals("true")) {
             try {
                 int offset = 0;
-                java.util.List<Product> products = Factory.getInstance().DAOProduct().getAllWithLimit(offset);
+                java.util.List<Product> products = Factory.getInstance().DAOProduct().getAllWithLimit(offset, 2);
                 model.addAttribute("products", products);
             } catch (SQLException e) {
                 model.addAttribute("errors", e);
@@ -53,7 +53,7 @@ public class Products {
         if (User_Auth.IsLogin().equals("true")) {
             try {
                 int offset = (page - 1)*2;
-                java.util.List<Product> products = Factory.getInstance().DAOProduct().getAllWithLimit(offset);
+                java.util.List<Product> products = Factory.getInstance().DAOProduct().getAllWithLimit(offset, 2);
                 model.addAttribute("products", products);
             } catch (SQLException e) {
                 model.addAttribute("errors", e);
@@ -181,9 +181,7 @@ public class Products {
         String tags = request.getParameter("tags");
         String[] tags_product = tags.split(",");
         Set<String> tag_name = new HashSet<String>();
-        for (int i=0;i<tags_product.length;i++) {
-            tag_name.add(tags_product[i]);
-        }
+        Collections.addAll(tag_name, tags_product);
 /*        ProductValidator.setName().....
         new Product Validator (name,price....)
 

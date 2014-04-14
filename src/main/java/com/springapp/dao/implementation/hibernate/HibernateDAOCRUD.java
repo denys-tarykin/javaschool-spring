@@ -82,12 +82,13 @@ abstract class HibernateDAOCRUD<T extends BaseDomainObject> implements DAOCRUD<T
         }
         return t;
     }
-    public List<T> getAllWithLimit(int offset) throws SQLException {
+
+    public List<T> getAllWithLimit(int offset, int limit) throws SQLException {
         Session session = null;
         List<T> t = new ArrayList<T>();
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            t = session.createCriteria(this.getInnerClass()).setFirstResult(offset).setMaxResults(2).list();//TODO:change limit
+            t = session.createCriteria(this.getInnerClass()).setFirstResult(offset).setMaxResults(limit).list();
         } catch (Exception e) {
             throw new SQLException("Data error", e);
         } finally {

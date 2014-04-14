@@ -66,7 +66,7 @@ public class Categories {
             return "redirect:/";
         }
         CategoryService catService = new CategoryServiceImpl();
-        catService.NewCategory(request.getParameter("name"),request.getParameter("description"));
+        catService.newCategory(request.getParameter("name"), request.getParameter("description"));
         return "redirect:/backend/categories/";
     }
 

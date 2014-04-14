@@ -34,7 +34,7 @@ public class CategoryServiceImpl implements CategoryService{
         }
     }
 
-    public void NewCategory(String name,String desc){
+    public void newCategory(String name, String desc) {
         try {
             Category cat = new Category();
             cat.setName(name);
