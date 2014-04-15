@@ -1,5 +1,9 @@
 package com.springapp.web.backend;
 
+import com.springapp.api.CategoryService;
+import com.springapp.api.ProductService;
+import com.springapp.api.implementation.CategoryServiceImpl;
+import com.springapp.api.implementation.ProductServiceImpl;
 import com.springapp.dao.Factory;
 import com.springapp.domain_objects.AuthUser;
 import com.springapp.domain_objects.Category;
@@ -32,32 +36,26 @@ public class Products {
         if (User_Auth == null)
             User_Auth = new AuthUser();
         if (User_Auth.IsLogin().equals("true")) {
-            try {
-                int offset = 0;
-                java.util.List<Product> products = Factory.getInstance().DAOProduct().getAllWithLimit(offset, 2);
-                model.addAttribute("products", products);
-            } catch (SQLException e) {
-                model.addAttribute("errors", e);
-            }
+            ProductService prod = new ProductServiceImpl();
+            int offset = 0;
+            java.util.List<Product> products = prod.getProducts(offset, 2);
+            model.addAttribute("products", products);
             return "backend/products-list";
         } else
             return "redirect:/";
     }
 
     @RequestMapping("/backend/products/page-{page}")
-    public String LoadPage(@PathVariable("page") Integer page,ModelMap model, HttpServletRequest request) {
+    public String LoadPage(@PathVariable("page") Integer page, ModelMap model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         AuthUser User_Auth = (AuthUser) session.getAttribute("userInfo");
         if (User_Auth == null)
             User_Auth = new AuthUser();
         if (User_Auth.IsLogin().equals("true")) {
-            try {
-                int offset = (page - 1)*2;
-                java.util.List<Product> products = Factory.getInstance().DAOProduct().getAllWithLimit(offset, 2);
-                model.addAttribute("products", products);
-            } catch (SQLException e) {
-                model.addAttribute("errors", e);
-            }
+            ProductService prod = new ProductServiceImpl();
+            int offset = (page - 1) * 2;
+            java.util.List<Product> products = prod.getProducts(offset, 2);
+            model.addAttribute("products", products);
             return "backend/products-list";
         } else
             return "redirect:/";
@@ -70,12 +68,8 @@ public class Products {
         if (User_Auth == null)
             User_Auth = new AuthUser();
         if (User_Auth.IsLogin().equals("true")) {
-            try {
-                Factory.getInstance().DAOProduct().remove(productId);
-                return "redirect:/backend/category";
-            } catch (SQLException e) {
-                request.setAttribute("errors", e);
-            }
+            ProductService prod = new ProductServiceImpl();
+            prod.removeProduct(productId);
             return "backend/products-list";
         } else
             return "redirect:/";
@@ -90,12 +84,9 @@ public class Products {
         if (User_Auth.IsLogin().equals("false")) {
             return "redirect:/";
         }
-        try {
-            List<Category> cats = Factory.getInstance().DAOCategory().getAll();
-            model.addAttribute("cats", cats);
-        } catch (SQLException e) {
-            model.addAttribute("errors", e);
-        }
+        CategoryService catService = new CategoryServiceImpl();
+        List<Category> cats = catService.LoadCategories();
+        model.addAttribute("cats", cats);
         return "backend/products-add";
     }
 

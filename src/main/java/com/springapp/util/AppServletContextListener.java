@@ -20,7 +20,6 @@ public class AppServletContextListener implements ServletContextListener {
             this.session = HibernateUtil.getSessionFactory().openSession();
 
         } catch (Exception e) {
-            //TODO:LOGGER
         }
 
     }
