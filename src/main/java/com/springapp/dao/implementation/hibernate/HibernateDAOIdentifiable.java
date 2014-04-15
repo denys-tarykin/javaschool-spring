@@ -32,9 +32,9 @@ abstract class HibernateDAOIdentifiable<T extends IdentifiableEntity> extends Hi
         return t;
     }
 
-    public Set getByIds(Collection<Integer> ids) throws SQLException {
+    public HashSet getByIds(Collection<Integer> ids) throws SQLException {
         Session session = null;
-        Set<T> categories = null;
+        HashSet<T> categories = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             //Category cats;
@@ -50,9 +50,9 @@ abstract class HibernateDAOIdentifiable<T extends IdentifiableEntity> extends Hi
         return categories;
     }
 
-    public Set getByIds(Integer[] ids) throws SQLException {
+    public HashSet getByIds(Integer[] ids) throws SQLException {
         Session session = null;
-        Set<T> categories = null;
+        HashSet<T> categories = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             //Category cats;

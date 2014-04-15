@@ -2,14 +2,12 @@ package com.springapp.web.frontend;
 
 import com.springapp.api.CategoryService;
 import com.springapp.api.implementation.CategoryServiceImpl;
-import com.springapp.dao.Factory;
 import com.springapp.domain_objects.Category;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Controller
@@ -20,8 +18,8 @@ public class Home {
         //try {
             //List<Category> cats = Factory.getInstance().DAOCategory().getAll();
             CategoryService catService = new CategoryServiceImpl();
-            List <Category> categoryList = catService.LoadCategories();
-            model.addAttribute("cats", categoryList);
+        List<Category> categoryList = catService.loadCategories();
+        model.addAttribute("cats", categoryList);
         /*} catch (SQLException e) {
             model.addAttribute("errors", e);
         }*/

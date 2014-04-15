@@ -24,7 +24,7 @@ public class Categories {
             User_Auth = new AuthUser();
         if (User_Auth.IsLogin().equals("true")) {
             CategoryService catService = new CategoryServiceImpl();
-                model.addAttribute("cats", catService.LoadCategories());
+            model.addAttribute("cats", catService.loadCategories());
             return "backend/category-list";
         } else
             return "redirect:/";
@@ -115,7 +115,7 @@ public class Categories {
     }
 
     @RequestMapping(" /backend/category/products/{categoryId}/page-{page}")
-    public String ProductsGetPadination(@PathVariable("page") Integer page,@PathVariable("categoryId") Integer categoryId,ModelMap model,HttpServletRequest request) {
+    public String ProductsGetPagination(@PathVariable("page") Integer page, @PathVariable("categoryId") Integer categoryId, ModelMap model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         AuthUser User_Auth = (AuthUser) session.getAttribute("userInfo");
         if (User_Auth == null)

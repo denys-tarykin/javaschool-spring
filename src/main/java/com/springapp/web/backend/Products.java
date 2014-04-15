@@ -6,7 +6,6 @@ import com.springapp.api.TagService;
 import com.springapp.api.implementation.CategoryServiceImpl;
 import com.springapp.api.implementation.ProductServiceImpl;
 import com.springapp.api.implementation.TagServiceImpl;
-import com.springapp.dao.Factory;
 import com.springapp.domain_objects.AuthUser;
 import com.springapp.domain_objects.Category;
 import com.springapp.domain_objects.Product;
@@ -21,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -87,7 +85,7 @@ public class Products {
             return "redirect:/";
         }
         CategoryService catService = new CategoryServiceImpl();
-        List<Category> cats = catService.LoadCategories();
+        List<Category> cats = catService.loadCategories();
         model.addAttribute("cats", cats);
         return "backend/products-add";
     }
@@ -115,20 +113,26 @@ public class Products {
         String[] tags_product = tags.split(",");
         Set<String> tags_to_product = new HashSet<String>();
         Collections.addAll(tags_to_product, tags_product);
-        try {
-            Product prod = new Product();
+
+        CategoryService categoryService = new CategoryServiceImpl();
+        ProductService productService = new ProductServiceImpl();
+
+        //try {
+        Product prod = new Product();
             prod.setName(name);
             prod.setDescription(desc);
             prod.setPrice(price);
-            Set cat = Factory.getInstance().DAOCategory().getByIds(cats);
-            prod.setCategories(cat);
+        //Set cat = Factory.getInstance().DAOCategory().getByIds(cats);
+        HashSet<Category> cat = categoryService.loadCategories(cats);
+        prod.setCategories(cat);
             //prod.setTags(tags_to_product);
-            Factory.getInstance().DAOProduct().add(prod);
-            return "redirect:/backend/products";
-        } catch (SQLException e) {
+        productService.addProduct(prod);
+        //Factory.getInstance().DAOProduct().add(prod);
+        return "redirect:/backend/products";
+        /*} catch (SQLException e) {
             model.addAttribute("errors", e);
         }
-        return "backend/category-add";
+        return "backend/category-add";/*
     }
 
     @RequestMapping("/backend/products/edit/{productId}")
@@ -140,17 +144,23 @@ public class Products {
         if (User_Auth.IsLogin().equals("false")) {
             return "redirect:/";
         }
-        try {
-            Product product = Factory.getInstance().DAOProduct().getById(productId);
-            List<Category> cats = Factory.getInstance().DAOCategory().getAll();
+        ProductService productService = new ProductServiceImpl();
+        CategoryService categoryService = new CategoryServiceImpl();
+
+        Product product = productService.getProduct(productId);
+        List<Category> cats = categoryService.loadCategories();
+
+        //try {
+            //Product product = Factory.getInstance().DAOProduct().getById(productId);
+            //List<Category> cats = Factory.getInstance().DAOCategory().getAll();
             model.addAttribute("cats_to_product", product.getCategories());
             model.addAttribute("cats", cats);
             model.addAttribute("product", product);
 
-        } catch (SQLException e) {
+       /* } catch (SQLException e) {
             model.addAttribute("errors", e);
         }
-        return "backend/products-edit";
+        return "backend/products-edit";*/
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/backend/products/edit/{productId}")
@@ -176,15 +186,16 @@ public class Products {
         String[] tags_product = tags.split(",");
         Set<String> tag_name = new HashSet<String>();
         Collections.addAll(tag_name, tags_product);
-/*        ProductValidator.setName().....
+/* TODO: Validator draft
+       ProductValidator.setName().....
         new Product Validator (name,price....)
 
         bool ProductValidator.Validate()
                 if true try-catch else HashMap ProductValidator.getErrorList()
 */
-        try {
+        /*try {
 
-          /* HashSet<Tag> tag = Factory.getInstance().DAOTag().getByNames(tag_name);
+           HashSet<Tag> tag = Factory.getInstance().DAOTag().getByNames(tag_name);
             String[] array_tag=null;
             Set<String> DB_tags =new HashSet<String>();
             for (Tag tg : tag) {
@@ -199,19 +210,24 @@ public class Products {
                 }
             }*/
             TagService tagService = new TagServiceImpl();
-            tagService.createTagsForProduct(tag_name);
+        ProductService productService = new ProductServiceImpl();
+        CategoryService categoryService = new CategoryServiceImpl();
 
-            Product product = Factory.getInstance().DAOProduct().getById(productId);
-            product.setName(name);
+        HashSet<Tag> tag = tagService.createTagsForProduct(tag_name);
+
+        Product product = productService.getProduct(productId);
+        product.setName(name);
             product.setDescription(desc);
-            Set cat = Factory.getInstance().DAOCategory().getByIds(cats);
-            product.setCategories(cat);
+        HashSet<Category> cat = categoryService.loadCategories(cats);
+        //HashSet cat = Factory.getInstance().DAOCategory().getByIds(cats);
+        product.setCategories(cat);
             product.setPrice(price);
-            //product.setTags(tag);
-            Factory.getInstance().DAOProduct().update(product);
-        } catch (SQLException e) {
+        product.setTags(tag);
+        productService.edit(product);
+        //Factory.getInstance().DAOProduct().update(product);
+        /*} catch (SQLException e) {
             model.addAttribute("errors", e);
-        }
+        }*/
         return "redirect:/backend/products";
     }
 

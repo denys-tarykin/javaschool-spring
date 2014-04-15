@@ -7,6 +7,8 @@ import com.springapp.domain_objects.Category;
 import com.springapp.domain_objects.Product;
 
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +19,7 @@ import java.util.logging.Logger;
 public class CategoryServiceImpl implements CategoryService{
     Logger logger = Logger.getLogger(ProductService.class.getName());
 
-    public List<Category>LoadCategories(){
+    public List<Category> loadCategories() {
         List<Category> cats=null;
         try {
            cats = Factory.getInstance().DAOCategory().getAll();
@@ -26,6 +28,27 @@ public class CategoryServiceImpl implements CategoryService{
         }
         return cats;
     }
+
+    public HashSet<Category> loadCategories(Collection<Integer> ids) {
+        HashSet<Category> cats = null;
+        try {
+            cats = Factory.getInstance().DAOCategory().getByIds(ids);
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "DB error:", e);
+        }
+        return cats;
+    }
+
+    public HashSet<Category> loadCategories(Integer[] ids) {
+        HashSet<Category> cats = null;
+        try {
+            cats = Factory.getInstance().DAOCategory().getByIds(ids);
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "DB error:", e);
+        }
+        return cats;
+    }
+
     public void Delete(int id){
         try {
             Factory.getInstance().DAOCategory().remove(id);
