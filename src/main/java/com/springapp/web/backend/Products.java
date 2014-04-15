@@ -2,8 +2,10 @@ package com.springapp.web.backend;
 
 import com.springapp.api.CategoryService;
 import com.springapp.api.ProductService;
+import com.springapp.api.TagService;
 import com.springapp.api.implementation.CategoryServiceImpl;
 import com.springapp.api.implementation.ProductServiceImpl;
+import com.springapp.api.implementation.TagServiceImpl;
 import com.springapp.dao.Factory;
 import com.springapp.domain_objects.AuthUser;
 import com.springapp.domain_objects.Category;
@@ -169,6 +171,7 @@ public class Products {
             cats.add(Integer.parseInt(cat));
         }
         BigDecimal price = new BigDecimal(request.getParameter("price")).setScale(2, RoundingMode.HALF_UP);
+
         String tags = request.getParameter("tags");
         String[] tags_product = tags.split(",");
         Set<String> tag_name = new HashSet<String>();
@@ -181,7 +184,7 @@ public class Products {
 */
         try {
 
-           Set<Tag> tag = Factory.getInstance().DAOTag().getByNames(tag_name);
+          /* HashSet<Tag> tag = Factory.getInstance().DAOTag().getByNames(tag_name);
             String[] array_tag=null;
             Set<String> DB_tags =new HashSet<String>();
             for (Tag tg : tag) {
@@ -194,7 +197,9 @@ public class Products {
                     tg.setTag(str_tag);
                     Factory.getInstance().DAOTag().add(tg);
                 }
-            }
+            }*/
+            TagService tagService = new TagServiceImpl();
+            tagService.createTagsForProduct(tag_name);
 
             Product product = Factory.getInstance().DAOProduct().getById(productId);
             product.setName(name);

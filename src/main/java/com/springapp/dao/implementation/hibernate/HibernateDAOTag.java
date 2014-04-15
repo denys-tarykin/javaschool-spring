@@ -9,7 +9,6 @@ import org.hibernate.criterion.Restrictions;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 public class HibernateDAOTag extends HibernateDAOIdentifiable<Tag> implements DAOTag {
 
@@ -36,10 +35,9 @@ public class HibernateDAOTag extends HibernateDAOIdentifiable<Tag> implements DA
     }
 
 
-
-    public Set<Tag> getByNames(Collection<String> names) throws SQLException {
+    public HashSet<Tag> getByNames(Collection<String> names) throws SQLException {
         Session session = null;
-        Set<Tag> return_data = null;
+        HashSet<Tag> return_data = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             return_data = new HashSet<Tag>(session.createCriteria(this.getInnerClass()).add(Restrictions.in("tag", names)).list());

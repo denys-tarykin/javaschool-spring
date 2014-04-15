@@ -1,4 +1,5 @@
 package com.springapp.dao;
+//TODO: Rename it to HibernateDAO
 
 import com.springapp.dao.implementation.hibernate.HibernateDAOCategory;
 import com.springapp.dao.implementation.hibernate.HibernateDAOProduct;

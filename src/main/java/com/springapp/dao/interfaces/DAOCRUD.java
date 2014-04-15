@@ -3,6 +3,7 @@ package com.springapp.dao.interfaces;
 import com.springapp.domain_objects.BaseDomainObject;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -10,6 +11,8 @@ import java.util.List;
  */
 public interface DAOCRUD<T extends BaseDomainObject> {
     public void add(T obj) throws SQLException;
+
+    public void add(Collection<T> obj) throws SQLException;
 
     public void update(T obj) throws SQLException;
 
