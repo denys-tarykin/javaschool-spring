@@ -4,11 +4,12 @@ import com.springapp.dao.interfaces.DAOCRUD;
 import com.springapp.domain_objects.BaseDomainObject;
 import com.springapp.util.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 
 abstract class HibernateDAOCRUD<T extends BaseDomainObject> implements DAOCRUD<T> {
@@ -117,6 +118,44 @@ abstract class HibernateDAOCRUD<T extends BaseDomainObject> implements DAOCRUD<T
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             t = session.createCriteria(this.getInnerClass()).setFirstResult(offset).setMaxResults(limit).list();
+        } catch (Exception e) {
+            throw new SQLException("Data error", e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return t;
+    }
+
+    public int getCount() throws SQLException {
+        Session session = null;
+        int count = 0;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            count = (int) session.createCriteria(this.getInnerClass()).setProjection(Projections.rowCount()).uniqueResult();
+        } catch (Exception e) {
+            throw new SQLException("Data error", e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return count;
+    }
+
+    //TODO:test this one
+    public List<T> getRandom(int count) throws SQLException {
+        Session session = null;
+        List<T> t = new ArrayList<T>();
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            HashSet<Long> offsets = new HashSet<Long>();
+            /*Long maximum = this.getCount();
+            while(offsets.size()<count){
+                offsets.add((Long)(Math.random()*))
+            }*/
+            t = session.createCriteria(this.getInnerClass()).add(Restrictions.sqlRestriction("1=1 order by rand()")).setMaxResults(count).list();
         } catch (Exception e) {
             throw new SQLException("Data error", e);
         } finally {
