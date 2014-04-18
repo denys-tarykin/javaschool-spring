@@ -109,10 +109,13 @@ public class Products {
 
         //BigDecimal price = new BigDecimal(request.getParameter("price"), new MathContext(2, RoundingMode.HALF_UP));
         BigDecimal price = new BigDecimal(request.getParameter("price")).setScale(2, RoundingMode.HALF_UP);
+
         String tags = request.getParameter("tags");
-        String[] tags_product = tags.split(",");
+        String[] tags_product = tags.split("\\s*,+\\s*");
         Set<String> tags_to_product = new HashSet<String>();
-        Collections.addAll(tags_to_product, tags_product);
+        for (String tag : tags_product) {
+            tags_to_product.add(tag.replaceAll("\\s+", " "));
+        }
 
         CategoryService categoryService = new CategoryServiceImpl();
         ProductService productService = new ProductServiceImpl();
@@ -183,9 +186,11 @@ public class Products {
         BigDecimal price = new BigDecimal(request.getParameter("price")).setScale(2, RoundingMode.HALF_UP);
 
         String tags = request.getParameter("tags");
-        String[] tags_product = tags.split(",");
+        String[] tags_product = tags.split("\\s*,+\\s*");
         Set<String> tag_name = new HashSet<String>();
-        Collections.addAll(tag_name, tags_product);
+        for (String tag : tags_product) {
+            tag_name.add(tag.replaceAll("\\s+", " "));
+        }
 /* TODO: Validator draft
        ProductValidator.setName().....
         new Product Validator (name,price....)
