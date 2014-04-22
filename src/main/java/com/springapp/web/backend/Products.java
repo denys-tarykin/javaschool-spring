@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -91,7 +92,7 @@ public class Products {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/backend/products/add")
-    public String AddPost(ModelMap model, HttpServletRequest request) {
+    public String AddPost(ModelMap model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         HttpSession session = request.getSession();
         AuthUser User_Auth = (AuthUser) session.getAttribute("userInfo");
         if (User_Auth == null)
@@ -138,7 +139,9 @@ public class Products {
         }
         return "backend/category-add";*/
         }else {
-            return "redirect:/backend/products";
+            redirectAttributes.addFlashAttribute("ErrorList", validator.getErrors());
+            redirectAttributes.addFlashAttribute("name", name);
+            return "redirect:/backend/products/add";
         }
 
     }

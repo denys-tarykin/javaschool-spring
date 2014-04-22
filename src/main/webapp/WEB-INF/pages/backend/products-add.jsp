@@ -1,5 +1,7 @@
 <%@ page import="com.springapp.domain_objects.Category" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.HashMap" %>
 
 <%--
   Created by IntelliJ IDEA.
@@ -18,9 +20,19 @@
     </div>
     <div class="inner-content">
         <form method="post" action="/backend/products/add">
+            <% Map<String, String> errorList = (HashMap<String, String>) request.getAttribute("ErrorList");
+                if (errorList == null) {
+                    errorList = new HashMap<String, String>();
+                }
+            %>
 
             <p style="width: 50px;"><label>Name</label>
+                <%if (errorList.containsKey("name")) {%>
+                <input name="name" value="<%=request.getAttribute("name")%>"> <label><%=errorList.get("name")%>
+                </label>
+                <%} else {%>
                 <input name="name">
+                <%}%>
             </p>
 
             <p style="width: 50px;">
