@@ -15,6 +15,7 @@ public class Validator {
         }else
             return false;
     }
+
     public boolean notNull(String value){
         if(value.isEmpty())
             return false;
@@ -29,9 +30,11 @@ public class Validator {
     }
 
     public boolean ValidateInt(String intData){
-        if(intData.equals(Integer.parseInt(intData)))
+        Pattern p = Pattern.compile("[0-9]+(\\.[0-9]{1,2})?");
+        Matcher m = p.matcher(intData);
+        if (m.matches()) {
             return true;
-        else
+        } else
             return false;
     }
 

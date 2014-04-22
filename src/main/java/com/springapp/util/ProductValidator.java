@@ -37,7 +37,7 @@ public class ProductValidator extends Validator {
     }
 
     public boolean Validate(){
-       if(ValidateName()&&ValidateDescription()&&ValidatePrive()&&ValidateCateories())
+        if (ValidateName() && ValidateDescription() && ValidatePrice() && ValidateCateories())
             return true;
        else
            return false;
@@ -45,27 +45,22 @@ public class ProductValidator extends Validator {
 
     private boolean ValidateName(){
         if(notNull(this.name)) {
-            if (ValidateString(this.name)) {
-                if(checkStringLength(this.name,15,100))
-                    return true;
+            if (checkStringLength(this.name, 4, 100))
+                return true;
                 else{
                     setError("name","Wrong name");
                     return false;
                 }
-            } else {
-                setError("Name", "Wrong name");
-                return false;
-            }
         }else {
-            setError("Name","Enter your name");
+            setError("Name", "Enter name");
             return false;
         }
     }
 
     private boolean ValidateDescription(){
         if(notNull(this.description)) {
-                if(checkStringLength(this.description,20,500))
-                    return true;
+            if (checkStringLength(this.description, 10, 500))
+                return true;
                 else{
                     setError("Description","Wrong description");
                     return false;
@@ -77,13 +72,13 @@ public class ProductValidator extends Validator {
 
     }
 
-    private boolean ValidatePrive(){
+    private boolean ValidatePrice() {
         if(notNull(this.price)){
             if(ValidateInt(this.price)){
-                if(checkStringLength(this.description,1,12))
+                if (checkStringLength(this.price, 1, 12))
                     return true;
                 else{
-                    setError("Description","Wrong prince");
+                    setError("Price", "Wrong prince");
                     return false;
                 }
             }else {
