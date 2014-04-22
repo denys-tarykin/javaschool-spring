@@ -14,17 +14,17 @@ public class ProductValidator extends Validator {
 
     private String price;
 
-    //private Set<Category> categories = new HashSet<Category>(0);
+    private String[] categories ;
 
     //private Set<Tag> tags = new HashSet<Tag>(0);
 
     private Map<String, String> errors = new HashMap<>();
 
-    public ProductValidator(String name,String description,String price){
+    public ProductValidator(String name,String description,String price,String[] categories){
         this.name = name;
         this.description = description;
         this.price = price;
-        //this.categories = categories;
+        this.categories = categories;
         //this.tags = tags;
     }
 
@@ -37,7 +37,7 @@ public class ProductValidator extends Validator {
     }
 
     public boolean Validate(){
-       if(ValidateName()&&ValidateDescription()&&ValidatePrive())
+       if(ValidateName()&&ValidateDescription()&&ValidatePrive()&&ValidateCateories())
             return true;
        else
            return false;
@@ -92,6 +92,15 @@ public class ProductValidator extends Validator {
             }
         }else{
             setError("Prince","Enter prince");
+            return false;
+        }
+    }
+
+    private boolean ValidateCateories(){
+        if(cheskCategoriesArray(this.categories)){
+              return true;
+        }else {
+            setError("Categories","Select some categories");
             return false;
         }
     }

@@ -35,4 +35,11 @@ public class Validator {
             return false;
     }
 
+    public boolean cheskCategoriesArray(String[] array){
+        if(array.length >= 1)
+            return true;
+        else
+            return false;
+    }
+
 }

@@ -10,6 +10,7 @@ import com.springapp.domain_objects.AuthUser;
 import com.springapp.domain_objects.Category;
 import com.springapp.domain_objects.Product;
 import com.springapp.domain_objects.Tag;
+import com.springapp.util.ProductValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -119,26 +119,31 @@ public class Products {
 
         CategoryService categoryService = new CategoryServiceImpl();
         ProductService productService = new ProductServiceImpl();
-
-        //try {
-        Product prod = new Product();
+        ProductValidator validator = new ProductValidator(name,desc,request.getParameter("price"),categories);
+        if(validator.Validate()) {
+            //try {
+            Product prod = new Product();
             prod.setName(name);
             prod.setDescription(desc);
             prod.setPrice(price);
-        //Set cat = Factory.getInstance().DAOCategory().getByIds(cats);
-        HashSet<Category> cat = categoryService.loadCategories(cats);
-        prod.setCategories(cat);
+            //Set cat = Factory.getInstance().DAOCategory().getByIds(cats);
+            HashSet<Category> cat = categoryService.loadCategories(cats);
+            prod.setCategories(cat);
             //prod.setTags(tags_to_product);
-        productService.addProduct(prod);
-        //Factory.getInstance().DAOProduct().add(prod);
-        return "redirect:/backend/products";
+            productService.addProduct(prod);
+            //Factory.getInstance().DAOProduct().add(prod);
+            return "redirect:/backend/products";
         /*} catch (SQLException e) {
             model.addAttribute("errors", e);
         }
-        return "backend/category-add";/*
+        return "backend/category-add";*/
+        }else {
+            return "redirect:/backend/products";
+        }
+
     }
 
-    @RequestMapping("/backend/products/edit/{productId}")
+    /*@RequestMapping("/backend/products/edit/{productId}")
     public String EditGet(@PathVariable("productId") Integer productId, ModelMap model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         AuthUser User_Auth = (AuthUser) session.getAttribute("userInfo");
@@ -163,8 +168,9 @@ public class Products {
        /* } catch (SQLException e) {
             model.addAttribute("errors", e);
         }
-        return "backend/products-edit";*/
-    }
+        return "backend/products-edit";
+        }*/
+
 
     @RequestMapping(method = RequestMethod.POST, value = "/backend/products/edit/{productId}")
     public String EditPost(@PathVariable("productId") Integer productId, ModelMap model, HttpServletRequest request) {
