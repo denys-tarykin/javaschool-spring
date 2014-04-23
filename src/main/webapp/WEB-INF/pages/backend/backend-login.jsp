@@ -3,7 +3,7 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href="css/backend-style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/backend-style.css"/>
 
 </head>
 <body>
