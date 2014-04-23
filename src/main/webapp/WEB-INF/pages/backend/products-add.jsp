@@ -2,6 +2,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.HashSet" %>
 
 <%--
   Created by IntelliJ IDEA.
@@ -24,25 +25,57 @@
                 if (errorList == null) {
                     errorList = new HashMap<String, String>();
                 }
+
+                String name = (String) request.getAttribute("name");
+                if (name == null) {
+                    name = "";
+                }
+
+                String description = (String) request.getAttribute("description");
+                if (description == null) {
+                    description = "";
+                }
+
+                String price = (String) request.getAttribute("price");
+                if (price == null) {
+                    price = "";
+                }
+
+                HashSet<Integer> cats;
+                cats = (HashSet<Integer>) request.getAttribute("categories");
+                if (cats == null) {
+                    cats = new HashSet<Integer>();
+                }
+
+                String tags = (String) request.getAttribute("tags");
+                if (tags == null) {
+                    tags = "";
+                }
+
             %>
 
             <p style="width: 50px;"><label>Name</label>
+                <input name="name" value="<%=name%>">
                 <%if (errorList.containsKey("name")) {%>
-                <input name="name" value="<%=request.getAttribute("name")%>"> <label><%=errorList.get("name")%>
-                </label>
-                <%} else {%>
-                <input name="name">
-                <%}%>
+                <label><%=errorList.get("name")%>
+                </label><%}%>
             </p>
 
             <p style="width: 50px;">
                 <label>Description</label>
-                <textarea name="description"></textarea>
+                <textarea name="description"><%=description%>
+                </textarea>
+                <%if (errorList.containsKey("description")) {%>
+                <label><%=errorList.get("description")%>
+                </label><%}%>
             </p>
 
             <p style="width: 50px;">
                 <label>Price:</label>
-                <input name="price">
+                <input name="price" value="<%=price%>">
+                <%if (errorList.containsKey("price")) {%>
+                <label><%=errorList.get("price")%>
+                </label><%}%>
             </p>
             <p style="width: 50px;">
                 <label>Categories:</label>
@@ -52,13 +85,17 @@
                         Category cat = categories.get(1);
                         for (int i = 0; i < categories.size(); i++) {
                     %>
-                    <option value="<%=categories.get(i).getId()%>" ><%=categories.get(i).getName()%></option>
+                    <option value="<%=categories.get(i).getId()%>" <%=cats.contains(categories.get(i).getId()) ? "selected" : ""%>><%=categories.get(i).getName()%>
+                    </option>
                     <%}%>
                 </select>
+                <%if (errorList.containsKey("categories")) {%>
+                <label><%=errorList.get("categories")%>
+                </label><%}%>
             </p>
             <p>
                 <label>Tags</label>
-                <input name="tags">
+                <input name="tags" value="<%=tags%>">
             </p>
             <p>
                 <button>Save</button>

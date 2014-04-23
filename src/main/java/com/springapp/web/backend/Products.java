@@ -141,6 +141,10 @@ public class Products {
         }else {
             redirectAttributes.addFlashAttribute("ErrorList", validator.getErrors());
             redirectAttributes.addFlashAttribute("name", name);
+            redirectAttributes.addFlashAttribute("description", desc);
+            redirectAttributes.addFlashAttribute("price", request.getParameter("price"));
+            redirectAttributes.addFlashAttribute("categories", cats);
+            redirectAttributes.addFlashAttribute("tags", tags);
             return "redirect:/backend/products/add";
         }
 

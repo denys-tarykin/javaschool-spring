@@ -52,7 +52,7 @@ public class ProductValidator extends Validator {
                     return false;
                 }
         }else {
-            setError("Name", "Enter name");
+            setError("name", "Enter name");
             return false;
         }
     }
@@ -62,11 +62,11 @@ public class ProductValidator extends Validator {
             if (checkStringLength(this.description, 10, 500))
                 return true;
                 else{
-                    setError("Description","Wrong description");
-                    return false;
+                setError("description", "Wrong description");
+                return false;
                 }
         }else{
-            setError("Description","Wrong description");
+            setError("description", "Wrong description");
             return false;
         }
 
@@ -78,15 +78,15 @@ public class ProductValidator extends Validator {
                 if (checkStringLength(this.price, 1, 12))
                     return true;
                 else{
-                    setError("Price", "Wrong prince");
+                    setError("price", "Wrong price");
                     return false;
                 }
             }else {
-                setError("Prince","Wrong prince");
+                setError("price", "Wrong price");
                 return false;
             }
         }else{
-            setError("Prince","Enter prince");
+            setError("price", "Enter price");
             return false;
         }
     }
@@ -95,7 +95,7 @@ public class ProductValidator extends Validator {
         if(cheskCategoriesArray(this.categories)){
               return true;
         }else {
-            setError("Categories","Select some categories");
+            setError("categories", "Select one or more categories");
             return false;
         }
     }
